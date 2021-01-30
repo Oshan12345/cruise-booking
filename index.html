@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cruise Booking</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--Header and Menu Section-->
+    <header class="container">
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a class="active" href="#">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!--Booking Section-->
+    <main class="main-content container">
+
+        <div class="booking-content">
+            <h1>Cruise Queen</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+        </div>
+
+
+        <div class="booking-form" id="main-booking-form">
+            <h3>Book Ocean Time</h3>
+            <div class="input-group">
+                <label for="">Flying From</label>
+                <input class="inp-style" type="text" name="" placeholder="Dhaka, Bangladesh">
+            </div>
+            <div class="input-group">
+                <label for="">Flying To</label>
+                <input class="inp-style" type="text" name="" placeholder="New York, United States">
+            </div>
+            <div class="inputs">
+                <div class="input-group">
+                    <label" for="">Departure</label>
+                    <input class="inp-style" type="date" name="">
+                </div>
+                <div class="input-group">
+                    <label for="">Return</label>
+                    <input class="inp-style" type="date" name="">
+                </div>
+            </div>
+            <div class="input-group f-class">
+                <div>
+                    <label for="">First Class ($150)</label>
+                    <input class="inp-style inp-width" type="number" name="" id="first-class-count" value="0" disabled >
+                </div>
+                <div class="plus-minus-btn ">
+
+                  <button class="btn p-2 mt-3 btn-primary fw-bold " onclick="handleQuantityChange(true, 'first-class')">+</button>
+                  <button class="btn p-2 mt-3  btn-warning fw-bold" onclick="handleQuantityChange(false, 'first-class')">-</button>
+                </div>
+            </div>
+            
+            <div class="input-group f-class">
+                <div>
+                    <label for="">Economy ($100)</label>
+                    <input class="inp-style inp-width" type="number" name="" value="0" id="economy-class-count" disabled >
+                </div>
+                <div class="plus-minus-btn">
+                  <button class="btn p-2 mt-3 btn-primary fw-bold " onclick="handleQuantityChange(true, 'economy-class')">+</button>
+                  <button class="btn p-2 mt-3  btn-warning fw-bold" onclick="handleQuantityChange(false, 'economy-class')">-</button>
+                </div>
+            </div>
+            <div class="calculations">
+                <div class="amount">
+                    <div class="left">
+                        <p>Subtotal</p>
+                    </div>
+                    <div class="right">
+                      <p> $ <span id="sub-total">00</span></p>  
+                    </div>
+                </div>
+
+                <div class="amount">
+                    <div class="left">
+                        <p>Charge 10% VAT</p>
+                    </div>
+                    <div class="right">
+                    <p> $ <span id="vat">00</span></p>   
+                    </div>
+                </div>
+                <hr>
+                <div class="amount">
+                    <div class="left">
+                        <h4>Total</h4>
+                    </div>
+                    <div class="right">
+                        <p>$ <span id="total">00</span> </p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-style" onclick="showToast()" id="btnn">Book Now</button>
+        </div>
+        <!-- toast message -->
+         <div class="toast d-flex align-items-center text-white  border-0 " role="alert" aria-live="assertive" aria-atomic="true" id="toast-div">
+           <div class="toast-body" id="main-toast-body"></div>
+           <button type="button" class="btn-close btn-close-white ms-auto me-2" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </main>
+   
+
+    <!--Thank You-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script>
+//function for booking cart
+function handleQuantityChange(isIncrease, id) {
+  var ticketQuantity = getInputValue(id);
+  if (isIncrease == true) {
+    ticketQuantity = ticketQuantity + 1;
+  }
+  if (isIncrease == false && ticketQuantity > 0) {
+    ticketQuantity = ticketQuantity - 1;
+  }
+
+  document.getElementById(id + "-count").value = ticketQuantity;
+  priceCalculation(150, 100);
+}
+
+
+function priceCalculation(firstClassPrice, economicPrice) {
+  var firstClassTicketCount = getInputValue("first-class");
+  var economicTicketCount = getInputValue("economy-class");
+  var subTotal =
+    firstClassTicketCount * firstClassPrice +
+    economicTicketCount * economicPrice;
+  document.getElementById("sub-total").innerText = subTotal;
+
+  var vat = Math.round(subTotal * 0.1);
+  document.getElementById("vat").innerText = vat;
+
+  var totalPrice = subTotal + vat;
+  document.getElementById("total").innerText = totalPrice;
+}
+
+
+function getInputValue(id) {
+  var ticket = document.getElementById(id + "-count").value;
+  var ticketCount = parseInt(ticket);
+  return ticketCount;
+}
+
+//use of bootstrap toast while clicking booking button.
+var option = {
+  animation: true,
+  delay: 12000,
+};
+
+var toastElList = [].slice.call(document.querySelectorAll(".toast"));
+var toastList = toastElList.map(function (toastEl) {
+  return new bootstrap.Toast(toastEl, option);
+});
+
+
+// function for toast
+function showToast() {
+  var totalPrice = document.getElementById("total").innerText;
+  totalPrice = parseInt(totalPrice);
+  var errorText="<b>Dear client,</b><p> You have not chosen any package yet . </p>"
+  var firstClassTicket = getInputValue("first-class");
+  var economicTicket = getInputValue("economy-class");
+  var successText=`<b>Dear client,</b> <p>Thank you for letting us add some value to your journey.</p><p>You Have booked ${firstClassTicket} <b>first-class ticket</b> and ${economicTicket} <b>economic-ticket</b>.</p> We have sent you an email containing all the information. Wish you best of luck. </p>`
+  if (totalPrice == 0) {
+   toastMessage("toast-section-red",errorText)
+  } else {
+    toastMessage("toast-section",successText)
+    document.getElementById("main-booking-form").style.display = "none";   
+  }
+}
+
+
+function toastMessage(className, htmlText) {
+  document.getElementById("toast-div").setAttribute("class", className);
+  for (let i = 0; i < toastList.length; i++) {
+    toastList[i].show();
+  }
+  document.getElementById("main-toast-body").innerHTML = htmlText;
+}
+
+
+</script>
+</body>
+
+</html>
